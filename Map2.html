@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu with multiple callbacks - Sidr Example</title>
+    <!-- Include Sidr bundled CSS theme -->
+    <link rel="stylesheet" href="libs/jquery.sidr.dark.css">
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="libs/style.css">
+	<script src="libs/leaflet-src.js"></script>
+	<script src="src/plot/Plot.js"></script>
+	<script src="src/plot/Fine_Arrow.js"></script>
+	<script src="src/plot/Attack_Arrow.js"></script>
+	<script src="src/plot/Double_Arrow.js"></script>
+	<script src="src/plot/Straight_Arrow.js"></script>
+	<script src="src/plot/Assault_Arrow.js"></script>
+	<script src="src/plot/Tailed_Attack_Arrow.js"></script>
+	<script src="src/plot/Squad_Arrow.js"></script>
+	<script src="src/plot/Tailed_Squad_Arrow.js"></script>
+	<script src="src/plot/Ellipse.js"></script>
+	<script src="src/plot/Lune.js"></script>
+	<script src="src/plot/Sector.js"></script>
+	<script src="src/plot/Closed_Curve.js"></script>
+	<script src="src/plot/Gathering_Place.js"></script>
+	<script src="src/plot/Arc.js"></script>
+	<script src="src/plot/Curve.js"></script>
+    <link rel="stylesheet" href="libs/leaflet.css"/>
+    <script src="libs/leaflet-roughcanvas.js"></script>
+	
+	<script src="src/Leaflet.draw.js"></script>
+	<script src="src/Constants.js"></script>
+    <script src="src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="src/leaflet.draw.css"/>
+
+    <script src="src/Toolbar.js"></script>
+    <script src="src/Tooltip.js"></script>
+
+	<script src="src/ext/PlotUtils.js"></script>
+    <script src="src/ext/GeometryUtil.js"></script>
+    <script src="src/ext/LatLngUtil.js"></script>
+    <script src="src/ext/LineUtil.Intersect.js"></script>
+    <script src="src/ext/Polygon.Intersect.js"></script>
+    <script src="src/ext/Polyline.Intersect.js"></script>
+    <script src="src/ext/TouchEvents.js"></script>
+
+    <script src="src/draw/DrawToolbar.js"></script>
+    <script src="src/draw/handler/Draw.Feature.js"></script>
+    <script src="src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="src/draw/handler/Draw.Polyline.js"></script>
+    <script src="src/draw/handler/Draw.Marker.js"></script>
+    <script src="src/draw/handler/Draw.Circle.js"></script>
+    <script src="src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="src/draw/handler/Draw.Polygon.js"></script>  
+    <script src="src/draw/handler/Draw.Plot.js"></script>
+    <script src="src/draw/handler/Draw.Fine_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Rectangle.js"></script>
+    <script src="src/draw/handler/Draw.Attack_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Double_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Lune.js"></script>
+    <script src="src/draw/handler/Draw.Assault_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Ellipse.js"></script>
+    <script src="src/draw/handler/Draw.Squad_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Straight_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Tailed_Attack_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Tailed_Squad_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Sector.js"></script>
+    <script src="src/draw/handler/Draw.Closed_Curve.js"></script>
+    <script src="src/draw/handler/Draw.Gathering_Place.js"></script>
+    <script src="src/draw/handler/Draw.Arc.js"></script>
+    <script src="src/draw/handler/Draw.Curve.js"></script>    
+    
+    <script src="src/edit/EditToolbar.js"></script>
+    <script src="src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="src/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script src="src/Control.Draw.js"></script>
+
+    <script src="src/edit/handler/Edit.Poly.js"></script>
+    <script src="src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="src/edit/handler/Edit.Plot.js"></script>
+    <script src="src/edit/handler/Edit.Marker.js"></script>
+    <script src="src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="src/edit/handler/Edit.Circle.js"></script>
+	
+    <script src="javascript/Leaflet.StyleEditor.min.js"></script>
+    <link rel="stylesheet" href="css/Leaflet.StyleEditor.css" />
+
+	<script src="javascript/easy-button.js"></script>
+    <link rel="stylesheet" href="css/easy-button.css" />
+    
+    <script src="javascript/leaflet.browser.print.min.js"></script>
+
+
+
+    <style type="text/css">
+
+    body {
+        margin:0;
+        padding:0;
+    }
+    #map {
+        position:absolute;
+        top:0;
+        bottom:0;
+        width:100%;
+        left:230px;
+        
+    }
+	.star{
+  		font-size: 1.5em;
+	}
+   </style>
+  </head>
+  <body>
+
+    <div id="sidr">
+      <ul>
+          <li><a href="index.html">All Examples</a></li>
+          <li>
+              <a href="#">Sample link 2</a>
+              <ul>
+                  <li><a href="#">Child link 1</a></li>
+                  <li><a href="#">Child link 2</a></li>
+              </ul>
+          </li>
+          <li><a href="#">Sample link 3</a></li>
+      </ul>
+      <form>
+          <input type="text" placeholder="Search..." />
+      </form>
+      <h2>Sample heading</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mollis sapien non nisi sodales pulvinar. Curabitur odio velit, porta sit amet lobortis sit amet, volutpat ut justo.</p>
+    </div>
+
+    <a id="simple-menu" class="menu-button" href="#sidr">Toggle menu</a>
+
+    <div class="wrapper" id="map">
+
+    </div>
+
+    <!-- Include jQuery -->
+    <script src="libs/jquery-2.1.1.min.js"></script>
+    <!-- Try it also with jQuery 1.x or other version from the CDN -->
+    <!-- <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script> -->
+    <!-- Include the Sidr JS -->
+    <script src="libs/jquery.sidr.js"></script>
+
+    <!-- Your code -->
+    <script>
+
+    $(document).ready(function () {
+      $('#simple-menu').sidr({
+        speed: 700,
+        onOpen: function () {
+          $('body').css('background', 'red');
+        },
+        onClose: function () {
+          $('body').css('background', 'green');
+        },
+        onOpenEnd: function () {
+          $('body').css('background', 'grey');
+        },
+        onCloseEnd: function () {
+          $('body').css('background', '');
+        }
+      });
+    });
+
+    $( window ).resize(function () {
+      $.sidr('close', 'sidr');
+    });
+	
+	    var map = L.map('map',{
+    	center:[15.877304077148438,-29.900665283203125],
+    	zoom:10,
+    	preferCanvas:true,
+    	crs: L.CRS.EPSG4326
+    });
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    //	L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',{
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    //Initialize the StyleEditor
+    var styleEditor = L.control.styleEditor({
+        position: "topleft",
+        useGrouping: false
+    });
+    map.addControl(styleEditor);
+
+	L.easyButton( '<span class="star">&rarrw;</span>', function(){
+ 	 alert('待完善;');
+ 	 
+	}).addTo(map);
+
+
+    //Leaflet.draw
+
+    var drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    var drawControl = new L.Control.Draw({
+        draw: {
+            position: 'topleft',
+            polygon: {
+                title: 'Draw a sexy polygon!',
+                allowIntersection: false,
+                drawError: {
+                    color: '#b00b00',
+                    timeout: 1000
+                },
+                shapeOptions: {
+                    //color: '#bada55'
+                      color:'#FF1493'
+                },
+                showArea: true
+            },
+            polyline: {
+                metric: false
+            },
+            circle: {
+                shapeOptions: {
+                    color: '#662d91'
+                }
+            },
+            marker: {
+              icon: styleEditor.getDefaultIcon()
+            },
+            fine_arrow: {
+                metric: false
+            },
+            attack_arrow: {
+                metric: false
+            },
+            double_arrow: {
+                metric: false
+            },
+            
+        },
+        edit: {
+            featureGroup: drawnItems
+        }
+    });
+    map.addControl(drawControl);
+
+    map.on('draw:created', function(e) {
+        var type = e.layerType,
+            layer = e.layer;
+
+        if (type === 'marker') {
+            layer.bindPopup('A popup!');
+        }
+
+        drawnItems.addLayer(layer);
+    });
+     L.control.browserPrint({
+                printModesNames: { Custom:"Séléctionnez la zone" }
+            }).addTo(map);
+    
+    function act(){
+    	a = new L.Draw.Polyline(map);
+    	a.enable();
+    };
+    
+    </script>
+
+  </body>
+</html>

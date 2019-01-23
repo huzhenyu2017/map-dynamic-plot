@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>应急自适应快速制图标绘研究系统</title>
+
+<link rel="stylesheet" href="libs/bootstrap.min.css"/>
+<link rel="stylesheet" href="libs/sidebar-menu.css"/>
+<style type="text/css">
+.main-sidebar{
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: calc(100%);
+	min-height: 50%;
+	width: 230px;
+	z-index: 810;
+	background-color: #222d32;
+	border: #0a0a0a;
+    border-right-width: thin;
+    border-right-style: solid;
+    overflow: auto;
+ }
+</style>
+<!--
+	作者：838899414@qq.com
+	时间：2018-04-12
+	描述：下面是标绘系统部分的js和css
+-->
+	<script src="libs/leaflet-src.js"></script>
+	<script src="libs/L.TileLayer.Zoomify.js"></script>
+	<!-- <script src="libs/leaflet-0.7.3/leaflet-src.js"></script> -->
+	<script src="src/plot/Plot.js"></script>
+	<script src="src/plot/Fine_Arrow.js"></script>
+	<script src="src/plot/Attack_Arrow.js"></script>
+	<script src="src/plot/Double_Arrow.js"></script>
+	<script src="src/plot/Straight_Arrow.js"></script>
+	<script src="src/plot/Assault_Arrow.js"></script>
+	<script src="src/plot/Tailed_Attack_Arrow.js"></script>
+	<script src="src/plot/Squad_Arrow.js"></script>
+	<script src="src/plot/Tailed_Squad_Arrow.js"></script>
+	<script src="src/plot/Ellipse.js"></script>
+	<script src="src/plot/Lune.js"></script>
+	<script src="src/plot/Sector.js"></script>
+	<script src="src/plot/Closed_Curve.js"></script>
+	<script src="src/plot/Gathering_Place.js"></script>
+	<script src="src/plot/Arc.js"></script>
+	<script src="src/plot/Curve.js"></script>
+    <link rel="stylesheet" href="libs/leaflet.css"/>
+	<!-- <link rel="stylesheet" href="libs/leaflet-0.7.3/leaflet.css"/> -->
+    <script src="libs/leaflet-roughcanvas.js"></script>
+	
+	<script src="src/Leaflet.draw.js"></script>
+	<script src="src/Constants.js"></script>
+    <script src="src/Leaflet.Draw.Event.js"></script>
+    <link rel="stylesheet" href="src/leaflet.draw.css"/>
+    
+    <script src="libs/leaflet.migrationLayer-src.js"></script>
+
+    <script src="src/Toolbar.js"></script>
+    <script src="src/Tooltip.js"></script>
+
+	<script src="src/ext/PlotUtils.js"></script>
+    <script src="src/ext/GeometryUtil.js"></script>
+    <script src="src/ext/LatLngUtil.js"></script>
+    <script src="src/ext/LineUtil.Intersect.js"></script>
+    <script src="src/ext/Polygon.Intersect.js"></script>
+    <script src="src/ext/Polyline.Intersect.js"></script>
+    <script src="src/ext/TouchEvents.js"></script>
+
+    <script src="src/draw/DrawToolbar.js"></script>
+    <script src="src/draw/handler/Draw.Feature.js"></script>
+    <script src="src/draw/handler/Draw.SimpleShape.js"></script>
+    <script src="src/draw/handler/Draw.Polyline.js"></script>
+    <script src="src/draw/handler/Draw.Marker.js"></script>
+    <script src="src/draw/handler/Draw.Circle.js"></script>
+    <script src="src/draw/handler/Draw.CircleMarker.js"></script>
+    <script src="src/draw/handler/Draw.Polygon.js"></script>  
+    <script src="src/draw/handler/Draw.Plot.js"></script>
+    <script src="src/draw/handler/Draw.Fine_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Rectangle.js"></script>
+    <script src="src/draw/handler/Draw.Attack_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Double_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Lune.js"></script>
+    <script src="src/draw/handler/Draw.Assault_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Ellipse.js"></script>
+    <script src="src/draw/handler/Draw.Squad_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Straight_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Tailed_Attack_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Tailed_Squad_Arrow.js"></script>
+    <script src="src/draw/handler/Draw.Sector.js"></script>
+    <script src="src/draw/handler/Draw.Closed_Curve.js"></script>
+    <script src="src/draw/handler/Draw.Gathering_Place.js"></script>
+    <script src="src/draw/handler/Draw.Arc.js"></script>
+    <script src="src/draw/handler/Draw.Curve.js"></script>  
+    <script src="src/draw/handler/Draw.FlowLine.js"></script>  
+    
+    <script src="src/edit/EditToolbar.js"></script>
+    <script src="src/edit/handler/EditToolbar.Edit.js"></script>
+    <script src="src/edit/handler/EditToolbar.Delete.js"></script>
+
+    <script src="src/Control.Draw.js"></script>
+
+    <script src="src/edit/handler/Edit.Poly.js"></script>
+    <script src="src/edit/handler/Edit.SimpleShape.js"></script>
+    <script src="src/edit/handler/Edit.Rectangle.js"></script>
+    <script src="src/edit/handler/Edit.Plot.js"></script>
+    <script src="src/edit/handler/Edit.Marker.js"></script>
+    <script src="src/edit/handler/Edit.CircleMarker.js"></script>
+    <script src="src/edit/handler/Edit.Circle.js"></script>
+    <script src="src/edit/handler/Edit.FlowLine.js"></script>
+	
+<!--    <script src="javascript/Leaflet.StyleEditor.min.js"></script>-->
+    <script src="javascript/Leaflet.StyleEditor.js"></script>
+    <script src="javascript/Util.js"></script>
+
+    <script src="javascript/FormElements/FormElement.js"></script>
+    <script src="javascript/FormElements/IconElement.js"></script>
+    <script src="javascript/FormElements/ColorElement.js"></script>
+    <script src="javascript/FormElements/OpacityElement.js"></script>
+    <script src="javascript/FormElements/SizeElement.js"></script>
+    <script src="javascript/FormElements/DashElement.js"></script>
+    <script src="javascript/FormElements/WidthElement.js"></script>
+
+    <script src="javascript/Form/Form.js"></script>
+    <script src="javascript/Form/GeometryForm.js"></script>
+    <script src="javascript/Form/MarkerForm.js"></script>
+    <script type="text/javascript" src="javascript/Form/FlowForm.js" ></script>
+
+    <script src="javascript/Marker/Marker.js"></script>
+    <script src="javascript/Marker/DefaultMarker.js"></script>
+    <script src="javascript/Marker/GlyphiconMarker.js"></script>
+
+    <script src="javascript/StyleForm.js"></script>
+
+    <script src="javascript/Control.js"></script>
+    
+    <link rel="stylesheet" href="css/Leaflet.StyleEditor.css" />
+
+	<script src="javascript/easy-button.js"></script>
+    <link rel="stylesheet" href="css/easy-button.css" />
+    
+    <script src="javascript/leaflet.browser.print.js"></script>
+	<script src="libs/perfect-scrollbar.js"></script>
+	<link rel="stylesheet" type="text/css" href="libs/perfect-scrollbar.css"/>
+	
+	<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> -->
+	<link rel="stylesheet" type="text/css" href="dist/all.css">
+	
+	<link rel="stylesheet" type="text/css" href="libs/leaflet-ruler.css">
+	<script src="libs/leaflet-ruler.js"></script>
+	
+	<script src="libs/heatleaflet.js"></script>
+	<script src="libs/realworld.10000.js"></script>
+	
+	<script src="dist/esri-leaflet.js"></script>
+	 <!-- <script src="https://unpkg.com/esri-leaflet@2.1.4/dist/esri-leaflet.js" -->
+    <!-- integrity="sha512-m+BZ3OSlzGdYLqUBZt3u6eA0sH+Txdmq7cqA1u8/B2aTXviGMMLOfrKyiIW7181jbzZAY0u+3jWoiL61iLcTKQ==" -->
+    <!-- crossorigin=""></script> -->
+	<script type="text/javascript" src="dist/Leaflet.VectorGrid.bundled.js"></script>
+	
+    <style type="text/css">
+
+    body {
+        margin:0;
+        padding:0;
+        overflow: hidden;
+    }
+    #map {
+        position:absolute;
+        top:0;
+        bottom:0;
+        right: 230px;
+        width:calc(100% - 230px);
+        height:calc(100%);
+        
+    }
+/*    <!-- .mainheader{ -->
+    	<!-- width: 100%; -->
+    	<!-- background-color: #080808; -->
+    	<!-- z-index: 2000; -->
+    	<!-- height:0px; -->
+    	<!-- position: relative; -->
+    <!-- } -->*/
+    .leaflet-styleeditor{
+    	margin-top:0px;
+    }
+	.star{
+  		font-size: 1.5em;
+	}
+	.leaflet-ruler{
+		display: none;
+	}
+/*	.leaflet-left .leaflet-control {
+    margin-left: 240px;
+	}
+	.leaflet-top .leaflet-control {
+    margin-top: 20px;
+	}*/
+	.leaflet-draw.leaflet-control{
+		display:none
+	}
+	.leaflet-styleeditor-interior{
+		background-color: #222d32;
+		overflow: auto;
+	}
+	.leaflet-styleeditor-header{
+		background-color: #222d32;
+	}
+	.leaflet-styleeditor-button{
+		background-color: #222d32;
+	}
+	body{
+		color: #9E9E9E;
+	}
+	.leaflet-styleeditor-color {
+    border: 1px solid #9E9E9E;
+	}
+	.leaflet-styleeditor-stroke{
+	border :1px solid #31383c;
+	}
+	.leaflet-styleeditor-tooltip{
+		color:#464646;
+	}
+	.leaflet-styleeditor-input{
+		background-color: #bdc7ce;
+		color:black;
+	}
+	.nav-header-log {
+    position: absolute;
+    left: 45%;
+    font-size: 25px;
+    font-weight: bolder;
+    line-height: 60px;
+    color: #fff;
+	}
+	.leaflet-control-styleeditor,.leaflet-control-styleeditor-cancel{
+		display:none
+	}
+	
+   </style>
+
+</head>
+<body>
+
+<!--头部导航-->
+<!-- <div class="mainheader" > -->
+	<!-- <div class="nav-header-log">态势符号标绘系统</div> -->
+<!-- </div> -->
+<!--侧边栏-->
+<aside class="main-sidebar">
+<section  class="sidebar">
+	<ul class="sidebar-menu">
+	  <li class="header fas fa-certificate"> 态势符号绘制</li>
+	  <li class="treeview">
+		<a href="#">
+		  <i class="fa fa-map-marker"></i> <span>点绘制</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+		  <li>
+			<a href="#" onclick="activateDraw('circlemarker')"><i class="fa fa-circle"></i> 圆点 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="circlemarker">
+			  <li><a href="#" onclick="actionDrawDisable('circlemarker')"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('marker')"><i class="fa fa-circle"></i> 定位 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="marker">
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#"><i class="fa fa-circle"></i> 热力图 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="HeatMap">
+			  <li>
+			  	<a href="#" onclick="HeatMapStart()"><i class="fa fa-circle"></i>设置压力值</a>
+			  	<ul class="treeview-menu" >
+			  		<input class="leaflet-styleeditor-input heatmap" type="number"  step="1" value="800" onchange="alterHeatMap()"id="heatmap">
+			  	</ul>
+			  </li>
+			  <li><a href="#" onclick="HeatMapStop()"><i class="fa fa-circle"></i>保存</a></li>
+			  <li><a href="#" onclick="HeatMapBack()"><i class="fa fa-circle"></i>撤销上一步</a></li>
+			  <li><a href="#" onclick="HeatMapRemove()"><i class="fa fa-circle"></i>全部移除</a></li>
+			</ul>
+		  </li>
+		</ul>
+	  </li>
+	 <li class="treeview">
+		<a href="#">
+		  <i class="fa fa-i-cursor"></i> <span>线绘制</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+		  <li>
+			<a href="#" onclick="activateDraw('polyline')"><i class="fa fa-circle"></i> 折线 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="polyline">
+			  <li><a href="#" onclick="actionDrawCompleteShape('polyline')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('polyline')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('arc')"><i class="fa fa-circle"></i> 弧线 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="arc">
+			  <li><a href="#" onclick="actionDrawCompleteShape('arc')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('arc')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('curve')"><i class="fa fa-circle"></i> 曲线 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="curve">
+			  <li><a href="#" onclick="actionDrawCompleteShape('curve')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('curve')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+<!--		  <li>
+			<a href="#"><i class="fa fa-circle"></i> 自由线(待完善) <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="freeline">
+			  <li><a href="#" ><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>-->
+		  <li>
+			<a href="#" onclick="activateDraw('straight_arrow')"><i class="fa fa-circle"></i> 细箭头 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="straight_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('straight_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		   <li>
+			<a href="#" onclick="activateDraw('flowline')"><i class="fa fa-circle"></i> 迁徙 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="flowline">
+			  <li><a href="#" onclick="actionDrawCompleteShape('flowline')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		</ul>
+	  </li>
+	  <li class="treeview">
+		<a href="#">
+		  <i class="fa fa-square"></i> <span>面绘制</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu">
+		  <li>
+			<a href="#" onclick="activateDraw('polygon')"><i class="fa fa-circle"></i> 多边形 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="polygon">
+			  <li><a href="#" onclick="actionDrawCompleteShape('polygon')")><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('polygon')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('rectangle')"><i class="fa fa-circle"></i> 矩形 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="rectangle">
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('circle')"><i class="fa fa-circle"></i> 圆 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="circle">
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('ellipse')"><i class="fa fa-circle"></i> 椭圆 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="ellipse">
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('lune')"><i class="fa fa-circle"></i> 弓形 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="lune">
+			  <li><a href="#" onclick="actionDrawCompleteShape('lune')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('lune')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('sector')"><i class="fa fa-circle"></i> 扇形 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="sector">
+			  <li><a href="#" onclick="actionDrawCompleteShape('sector')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('sector')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('closed_curve')"><i class="fa fa-circle"></i> 曲线面 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="closed_curve">
+			  <li><a href="#" onclick="actionDrawCompleteShape('closed_curve')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('closed_curve')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('gathering_place')"><i class="fa fa-circle"></i> 聚集地 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="gathering_place">
+			  <li><a href="#" onclick="actionDrawCompleteShape('gathering_place')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('gathering_place')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('double_arrow')"><i class="fa fa-circle"></i> 夹击 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="double_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('double_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('double_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('fine_arrow')"><i class="fa fa-circle"></i> 直行 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="fine_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('fine_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('fine_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('assault_arrow')"><i class="fa fa-circle"></i> 突击 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="assault_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('assault_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('assault_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('attack_arrow')"><i class="fa fa-circle"></i> 进攻 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="attack_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('attack_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('attack_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#" onclick="activateDraw('tailed_attack_arrow')"><i class="fa fa-circle"></i> 燕尾进攻 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="tailed_attack_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('tailed_attack_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('tailed_attack_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  <li>
+			<a href="#"onclick="activateDraw('squad_arrow')"><i class="fa fa-circle"></i> 战斗 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="squad_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('squad_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('squad_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		  		  <li>
+			<a href="#"onclick="activateDraw('tailed_squad_arrow')"><i class="fa fa-circle"></i> 燕尾战斗 <i class="fa fa-angle-left pull-right"></i></a>
+			<ul class="treeview-menu" id="tailed_squad_arrow">
+			  <li><a href="#" onclick="actionDrawCompleteShape('tailed_squad_arrow')"><i class="fa fa-circle"></i>完成</a></li>
+			  <li><a href="#" onclick="actionDrawDeleteLastVertex('tailed_squad_arrow')"><i class="fa fa-circle"></i>删除上一节点</a></li>
+			  <li><a href="#" onclick="actionDrawDisable()"><i class="fa fa-circle"></i>取消</a></li>
+			</ul>
+		  </li>
+		</ul>
+	  </li>
+	  <li class="header fas fa-pencil-alt "> 态势符号编辑</li>
+	  <li class="treeview">
+		<a href="#" onclick="deactivateStyleEditor()">
+		  <i class="fas fa-tachometer-alt" ></i> <span>样式编辑</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu" id="styleEditor">
+		  <li>
+			<a href="#" onclick="activateStyleEditor()"><i class="fa fa-circle"></i> 开始 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="deactivateStyleEditor()"><i class="fa fa-circle"></i> 取消 </i></a>
+		  </li>
+		</ul>
+	  </li>
+	  <li class="treeview">
+		<a href="#" onclick="actionEditDisable('edit')">
+		  <i class="fa fa-edit" ></i> <span>节点编辑</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu" id="edit">
+		  <li>
+			<a href="#" onclick="activateEdit('edit')"><i class="fa fa-circle"></i> 开始编辑 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="actionEditSave()"><i class="fa fa-circle"></i> 保存 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="actionEditDisable('edit')"><i class="fa fa-circle"></i> 取消 </i></a>
+		  </li>
+		</ul>
+	  </li>
+	  <li class="treeview">
+		<a href="#" onclick="actionEditDisable('remove')">
+		  <i class="fa fa-trash" ></i> <span>删除要素</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu" id="remove">
+		  <li>
+			<a href="#" onclick="activateEdit('remove')"><i class="fa fa-circle"></i> 开始删除 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="actionEditSave()"><i class="fa fa-circle"></i> 保存 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="actionEditClearAllLayers()"><i class="fa fa-circle"></i> 全部删除 </i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="actionEditDisable('remove')"><i class="fa fa-circle"></i> 取消 </i></a>
+		  </li>
+		</ul>
+	  </li>
+	  	  <li class="header fas fa-wrench"> 工具</li>
+	  <li class="treeview">
+		<a href="#" onclick="toggleRuler('ruler')">
+		  <i class="fab fa-dyalog" ></i> <span>测量</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu" id="ruler">
+		  <li>
+			<a href="#" onclick="toggleRuler()"><i class="fa fa-circle"></i>开始</i></a>
+		  </li>
+		  <li>
+			<a href="#" onclick="toggleRuler('ruler')"><i class="fa fa-circle"></i> 取消 </i></a>
+		  </li>
+		</ul>
+	  </li>
+	  <li class="treeview">
+		<a href="#" >
+		  <i class="fas fa-print" ></i> <span>地图打印</span>
+		  <i class="fa fa-angle-left pull-right"></i>
+		</a>
+		<ul class="treeview-menu" id="ruler"><!--type：Portrait/Landscape/Auto/Custom-->
+		  <li>
+			<a href="#"  onclick="activatePrint('Portrait')"><i class="fa fa-circle"></i> 竖版</i></a>
+		  </li>
+		  <li>
+			<a href="#"  onclick="activatePrint('Landscape')"><i class="fa fa-circle"></i> 横版</i></a>
+		  </li>
+		  <li>
+			<a href="#"  onclick="activatePrint('Auto')"><i class="fa fa-circle"></i> 适配已绘制图层</i></a>
+		  </li>
+		  <li>
+			<a href="#"  onclick="activatePrint('Custom')"><i class="fa fa-circle"></i> 划定区域</i></a>
+		  </li>
+		</ul>
+	  </li>
+	</ul>
+  </section>
+</aside>
+	<script src="libs/jquery-2.1.1.min.js" type="text/javascript"></script>
+	<script src="libs/sidebar-menu.js"></script>
+
+<!--地图容器-->
+<div style=" font:normal 14px/24px 'MicroSoft YaHei';" id="map"></div>
+
+ <script>
+	$.sidebarMenu($('.sidebar-menu'));
+
+  //   var map = L.map('map',{
+  //   	center:[21.829369773668624,-31.815304919269085],
+	// 	// <!-- center:[21.829369773668624, lng: -31.815304919269085], -->
+  //   	zoom:8,
+  //   	preferCanvas:true,
+  //   	crs: L.CRS.EPSG4326,
+  //   	zoomControl: false
+  //   });
+	// map.on('click',function(e){
+	// 	console.log(e.latlng);
+	// });
+  //   L.control.zoom({position:'topleft',zoomInTitle:'放大'}).addTo(map);
+	
+  //   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	// 	//http://{s}.tile.osm.org/{z}/{x}/{y}.png
+  //   	//L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png',{
+  //       //attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+	// 	// <!-- attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' + -->
+	// 	// 	<!-- '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + -->
+	// 	// 	<!-- 'Imagery © <a href="http://mapbox.com">Mapbox</a>', -->
+	// 	//id: 'mapbox.streets'
+	//   }).addTo(map);
+
+	var map = L.map('map', {
+				zoom:3,
+				crs: L.CRS.Simple //Set a flat projection, as we are projecting an image
+		});
+		
+	var layer = L.tileLayer.zoomify('data/geoinfo_lichuan/{g}/{z}-{x}-{y}.jpg', {
+			width: 10477,
+			height: 14021,
+			attribution: '&copy; Photo: Hubert'
+	}).addTo(map);
+
+	//Setting the view to our layer bounds, set by our Zoomify plugin
+	map.fitBounds(layer.getBounds());
+	
+	/**************************************************************************************************************/
+	var ruler = L.control.ruler();
+	map.addControl(ruler);
+    //Initialize the StyleEditor
+    var styleEditor = L.control.styleEditor({
+        position: "topright",
+        useGrouping: false ,
+        strings: {
+            cancel: '取消',
+            cancelTitle: '取消修改',
+            tooltip: '点击元素以改变样式',
+            tooltipNext: '点击下一个元素以改变样式'
+        },
+    });
+    var press=1000;
+    map.addControl(styleEditor);
+ 	 
+	//热力图
+	var heatMapDraw = false;
+    var heat = L.heatLayer(addressPoints);
+	function HeatMapStart(){              //开始添加热力点
+	    heatMapDraw = true;
+	    //alert("请在地图上点击热力点！");
+	    heat.onAdd(map);
+		};
+		
+	function HeatMapBack(){                    //取消上一个点
+	    if (addressPoints.length == 1)
+	       {return;}
+	       //alert("当前地图上无热力点！");
+	    else{
+	    	addressPoints.splice(addressPoints.length-1, addressPoints.length);
+		    heat.onAdd(map);
+	    }
+		
+	};
+	
+	 function HeatMapStop(){                    //停止添加热力点
+		heatMapDraw = false;
+		hideActionDraw("HeatMap");
+		//alert("已停止添加热力点！");
+	};
+	
+	function HeatMapRemove(){                    //清除热力图
+		heatMapDraw = false;
+		addressPoints.splice(1, addressPoints.length);
+	    heat.onRemove(map);
+	};
+	function alterHeatMap(){
+		press=document.getElementById("heatmap").value
+	};
+	
+	map.on({
+	    click: function (e) {
+	        if (heatMapDraw) {
+	        	var lang=[];
+	        	lang[0]=e.latlng.lat;
+	        	lang[1]=e.latlng.lng;
+	        	lang[2]=press;
+	            heat.addLatLng(lang);
+	            console.log(addressPoints);
+	        }
+	    }
+	})
+
+    //Leaflet.draw
+
+    var drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    var drawControl = new L.Control.Draw({
+        draw: {
+            position: 'topright',
+            polygon: {
+                title: 'Draw a sexy polygon!',
+                allowIntersection: false,
+                drawError: {
+                    color: '#b00b00',
+                    timeout: 1000
+                },
+                shapeOptions: {
+                    //color: '#bada55'
+                      color:'#FF1493'
+                },
+                showArea: true
+            },
+            polyline: {
+                metric: true
+            },
+            circle: {
+                shapeOptions: {
+                    color: '#662d91'
+                }
+            },
+            marker: {
+              icon: styleEditor.getDefaultIcon()
+            },
+            fine_arrow: {
+                metric: true
+            },
+            attack_arrow: {
+                metric: true
+            },
+            double_arrow: {
+                metric: true
+            },
+            arc: {
+                metric: true
+            },
+            straight_arrow:{
+                metric: true
+            },
+			arc:{
+                metric: true
+            },
+			curve:{
+                metric: true
+            },
+			closed_curve:{
+                metric: true
+            },
+			gathering_place:{
+                metric: true
+            },
+			lune:{
+                metric: true
+            },
+			ellipse:{
+                metric: true
+            },
+			assault_arrow:{
+                metric: true
+            },
+			sector:{
+                metric: true
+            },
+			squad_arrow:{
+                metric: true
+            },
+			tailed_attack_arrow:{
+                metric: true
+            },
+			tailed_squad_arrow:{
+                metric: true
+           },
+           flowline:{
+           	   metric: true
+           }
+            
+        },
+        edit: {
+            featureGroup: drawnItems
+        }
+    });
+    map.addControl(drawControl);
+
+    map.on('draw:created', function(e) {
+        var type = e.layerType,
+            layer = e.layer;
+
+        if (type === 'marker') {
+            layer.bindPopup('A popup!');
+        }
+
+        drawnItems.addLayer(layer);
+    });
+     var mapPrint = L.control.browserPrint(
+     	{
+     		title:'地图输出',
+     		position:'topleft',
+     		printModesNames:{ Portrait: "竖版", Landscape: "横版", Auto:"适配已绘制图层", Custom:"划定区域" }
+     	}
+     );
+     map.addControl(mapPrint);
+    
+    function activateDraw(type){
+		//new L.Draw.Polyline(map).enable();
+		if(drawControl._toolbars.draw._modes[type].handler.enabled())
+		{
+			drawControl._toolbars.draw._modes[type].handler.disable();
+			return;
+		}
+		drawControl._toolbars.draw._modes[type].handler.enable();
+		drawControl._toolbars.draw._modes[type].handler.on('disabled', function(){hideActionDraw(type)}, drawControl._toolbars.draw);
+    	
+    };
+    function actionDrawDeleteLastVertex(type){
+    	drawControl._toolbars.draw._modes[type].handler.deleteLastVertex();
+    };
+    function actionDrawCompleteShape(type){
+    	drawControl._toolbars.draw._modes[type].handler.completeShape();
+    };
+    function actionDrawDisable(){
+    	drawControl._toolbars.draw.disable();
+    };
+    function hideActionDraw(type){
+    	drawControl._toolbars.draw._handlerDeactivated;
+		var animationSpeed = 300;
+   		// var $this = $(this);
+   		 var checkElement = $("#"+type)
+
+   		 if (checkElement.is('.treeview-menu') && checkElement.is(':visible')) {
+     	 checkElement.slideUp(animationSpeed, function() {
+     	 checkElement.removeClass('menu-open');
+     	 });
+      	checkElement.parent("li").removeClass("active");
+   		 }
+    };
+        function activateEdit(type){
+    	drawControl._toolbars.edit._modes[type].handler.enable();
+    	if(styleEditor.disable){
+    		styleEditor.disable();
+    	}
+    };
+    function hideActionEdit(type){
+    	var animationSpeed = 300;
+   		// var $this = $(this);
+   		 var checkElement = $("#"+type)
+
+   		 if (checkElement.is('.treeview-menu') && checkElement.is(':visible')) {
+     	 checkElement.slideUp(animationSpeed, function() {
+     	 checkElement.removeClass('menu-open');
+     	 });
+      	checkElement.parent("li").removeClass("active");
+   		 }
+    };
+    function actionEditDisable(type){
+    	drawControl._toolbars.edit.disable();
+    	hideActionEdit(type);
+    };
+    function actionEditSave(){
+    	drawControl._toolbars.edit._save();
+    };
+    function actionEditClearAllLayers(){
+    	drawControl._toolbars.edit._clearAllLayers();
+    };
+    function activateStyleEditor(){ 
+    	 styleEditor.enable();
+    	 if(drawControl._toolbars.edit.disable){
+    	 	drawControl._toolbars.edit.disable();
+    	 }
+    };
+    function deactivateStyleEditor(){
+    	 styleEditor.disable();
+    	 hideActionEdit('styleEditor');
+    };
+    function toggleRuler(type){
+    	if(type&&(!ruler._choice))
+    	{	
+    		hideActionEdit(type);
+    		return;
+    	}
+    	if(type&&(ruler._choice))
+    	{	
+    		ruler._toggleMeasure();
+    		hideActionEdit(type);
+    		return;
+    	}
+    	ruler._toggleMeasure();
+    };
+    function activatePrint(type){
+    	//假如没有绘制图形，则无法按绘制图层的大小输出地图
+    	//type : Portrait/Landscape/Auto/Custom
+    	if(type=='Auto'){
+    		a=mapPrint._getBoundsForAllVisualLayers()
+    		if(!(a._northEast&&a._southWest)){
+    			alert("未绘制任何符号，无法输出地图");
+    			return;
+    		}
+    	};
+    	funcName='mapPrint.'+'_print' + type;
+    	eval(funcName+"();");
+    	
+    }
+    new PerfectScrollbar('.main-sidebar');
+    new PerfectScrollbar('.leaflet-styleeditor-interior');
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+L.StyleForm = L.Class.extend({
+    initialize: function(options) {
+        L.setOptions(this, options);
+
+        this.createMarkerForm();
+        this.createGeometryForm();
+		this.createFlowForm();
+		
+        this.addDOMEvents();
+    },
+
+    addDOMEvents: function() {
+        L.DomEvent.addListener(this.options.styleEditorOptions.map, 'click', this.lostFocus, this);
+        L.DomEvent.addListener(this.options.styleEditorDiv, 'click', this.lostFocus, this);
+    },
+
+    clearForm: function() {
+        this.options.styleEditorOptions.markerForm.hide();
+        this.options.styleEditorOptions.geometryForm.hide();
+        this.options.styleEditorOptions.flowForm.hide();        
+    },
+
+    createMarkerForm: function () {
+        var markerDiv = L.DomUtil.create(
+            'div', 'leaflet-styleeditor-interior-marker',this.options.styleEditorInterior);
+        this.options.styleEditorOptions.markerForm.create(markerDiv);
+    },
+
+    createGeometryForm: function () {
+        var markerDiv = L.DomUtil.create(
+            'div', 'leaflet-styleeditor-interior-geometry',this.options.styleEditorInterior);
+        this.options.styleEditorOptions.geometryForm.create(markerDiv);
+    },
+
+    createFlowForm: function () {
+        var markerDiv = L.DomUtil.create(
+            'div', 'leaflet-styleeditor-interior-flow',this.options.styleEditorInterior);
+        this.options.styleEditorOptions.flowForm.create(markerDiv);
+    },
+
+    showMarkerForm: function() {
+        this.clearForm();
+        this.options.styleEditorOptions.markerForm.show();
+    },
+    
+    showFlowForm: function() {
+        this.clearForm();
+        this.options.styleEditorOptions.flowForm.show();
+    },
+    
+    showGeometryForm: function() {
+        this.clearForm();
+        this.options.styleEditorOptions.geometryForm.show();
+    },
+
+    fireChangeEvent: function(element){
+        this.options.styleEditorOptions.map.fireEvent('styleeditor:changed', element);
+    },
+
+    lostFocus: function(e) {
+        var parent = e.target;
+        for (var i=0; i<10; i++) {
+            if (!parent)
+                break;
+            if (!!parent.className && L.DomUtil.hasClass(parent, 'leaflet-styleeditor-interior'))
+                return;
+            parent = parent.parentNode;
+        }
+
+        this.options.styleEditorOptions.markerForm.lostFocus();
+        this.options.styleEditorOptions.geometryForm.lostFocus();
+        this.options.styleEditorOptions.flowForm.lostFocus();
+        
+    }
+});
